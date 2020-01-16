@@ -2,8 +2,7 @@ package de.cloud;
 
 public class Cloud {
 
-    public static void main(String[] args){
-
+    public static void main(String[] args) {
     }
 
 }
