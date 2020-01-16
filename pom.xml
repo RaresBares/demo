@@ -13,7 +13,7 @@
 	</modules>
 	<packaging>pom</packaging>
 
-	<name>demo</name>
+	<name>Cloud</name>
 	<description>Demo project for Spring Boot</description>
 
 	<parent>
