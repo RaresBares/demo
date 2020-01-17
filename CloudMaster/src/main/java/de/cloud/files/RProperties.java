@@ -47,19 +47,19 @@ public class RProperties {
     }
 
     public void setBoolean(String key, boolean value) {
-        Boolean.parseBoolean(properties.getProperty(key, String.valueOf(value)));
+        getProperties().setProperty(key, String.valueOf(value));
     }
 
     public void setByte(String key, byte value) {
-        Integer.parseInt(properties.getProperty(key, String.valueOf(value)));
+        getProperties().setProperty(key, String.valueOf(value));
     }
 
     public void setShort(String key, short value) {
-        Integer.parseInt(properties.getProperty(key, String.valueOf(value)));
+        getProperties().setProperty(key, String.valueOf(value));
     }
 
     public void setString(String key, String value) {
-        String.valueOf(Integer.parseInt(properties.getProperty(key, value)));
+        getProperties().setProperty(key, value);
     }
 
     public void save(){
