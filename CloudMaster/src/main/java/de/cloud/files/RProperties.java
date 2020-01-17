@@ -14,10 +14,14 @@ public class RProperties {
     public File PropFile;
     private Properties properties;
 
-    public RProperties(File f) throws Exception {
+    public RProperties(File f) {
         setPropFile(f);
         this.properties = new Properties();
-        getProperties().load(new FileInputStream(f));
+        try {
+            getProperties().load(new FileInputStream(f));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
     }
