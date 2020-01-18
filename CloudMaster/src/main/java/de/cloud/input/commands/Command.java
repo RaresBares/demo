@@ -1,5 +1,6 @@
 package de.cloud.input.commands;
 
+import de.cloud.Cloud;
 import de.cloud.input.CommandMaster;
 import lombok.Getter;
 
@@ -19,7 +20,7 @@ public abstract class Command {
     public abstract void start();
 
     public void register() {
-        CommandMaster.PushnewCommand(this);
+        Cloud.commandMaster.PushnewCommand(this);
     }
 
     ;

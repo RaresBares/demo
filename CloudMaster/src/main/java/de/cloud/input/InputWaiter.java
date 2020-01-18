@@ -1,5 +1,6 @@
 package de.cloud.input;
 
+import de.cloud.Cloud;
 import de.cloud.Logs;
 import de.cloud.input.commands.Command;
 import javafx.util.Pair;
