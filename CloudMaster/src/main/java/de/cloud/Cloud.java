@@ -6,8 +6,7 @@ import de.cloud.files.RProperties;
 import de.cloud.files.fileutils.Files;
 import de.cloud.input.CommandMaster;
 import de.cloud.input.InputWaiter;
-import de.cloud.netty.endpoints.ButtlerThread;
-import de.cloud.netty.endpoints.rmaster.Server;
+
 import lombok.Getter;
 
 import java.io.File;
@@ -25,7 +24,7 @@ public class Cloud {
 
 
 
-    public static Server here;
+
     public static void main(String[] args) throws IOException {
 
         start();
@@ -50,7 +49,7 @@ public class Cloud {
             FileManager.reloadFiles();
 
 
-            new ButtlerThread().start();
+
 
 
 
@@ -63,8 +62,7 @@ public class Cloud {
         };
 
         Thread t = new Thread(r);
-        here  = Server.connect("localhost", 3141);
-        here.test();
+
         t.start();
         if (!filled.isEmpty()) {
             for (Files files : filled) {
