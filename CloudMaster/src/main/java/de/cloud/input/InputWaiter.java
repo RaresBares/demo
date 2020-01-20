@@ -5,9 +5,11 @@ import de.cloud.Logs;
 import de.cloud.input.commands.Command;
 import javafx.util.Pair;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class InputWaiter extends Thread{
@@ -25,14 +27,24 @@ public class InputWaiter extends Thread{
 
         while (true) {
             if(sc.hasNext()){
-                String current = sc.nextLine();
+                String nextLine = sc.nextLine();
+                String current = nextLine.split(" ")[0];
+                List<String> argsprototype = Arrays.asList(nextLine.split(" "));
+
+                ArrayList<String> args = new ArrayList<>(argsprototype);
+                args.remove(current);
                 if(isWaiterWaiting(current).getValue()){
                     isWaiterWaiting(current).getKey().exec(current);
                     waiters.remove( isWaiterWaiting(current).getKey());
                 }else{
                     Command c = GetCommandbyPattern(current);
                     if(c != null){
-                        c.start();
+
+                        try {
+                            c.start(args);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }else{
                         Logs.log(Logs.ERROR, " Diesen Befehl gibt es nicht!");
                     }
@@ -55,7 +67,7 @@ public class InputWaiter extends Thread{
         return pair;
     }
     private Command GetCommandbyPattern(String a){
-        for(Command c : CommandMaster.commands){
+        for(Command c : Cloud.commandMaster.commands){
             if(Arrays.asList(c.getKeys()).contains(a)){
                 return c;
             }

@@ -1,5 +1,7 @@
 package de.cloud.files;
 
+import de.cloud.Logs;
+
 import java.io.File;
 
 public class CloudProperties extends RProperties {
@@ -11,6 +13,8 @@ public class CloudProperties extends RProperties {
     @Override
     public RProperties resetup() {
         setInt("cloud-port", 27777);
+        save();
+        Logs.log(Logs.INFORMATION, "Reset of cloud.properties");
         return this;
     }
 }

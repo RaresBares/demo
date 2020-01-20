@@ -6,41 +6,93 @@ import de.cloud.files.RProperties;
 import de.cloud.files.fileutils.Files;
 import de.cloud.input.CommandMaster;
 import de.cloud.input.InputWaiter;
+import de.cloud.netty.endpoints.ButtlerThread;
+import de.cloud.netty.endpoints.rmaster.Server;
 import lombok.Getter;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
+import java.util.ArrayList;
 
 
 @Getter
 public class Cloud {
 
     public static RProperties CloudProps;
-   // public static InputWaiter inputWaiter;
-   // public static CommandMaster commandMaster;
+    public static InputWaiter inputWaiter;
+    public static CommandMaster commandMaster;
+    public static ArrayList<Files> filled = new ArrayList<>();
 
 
 
-    public static void start(){
-        Logs.log(Logs.INFORMATION,  "Cloud wird gestartet...");
-        FileManager.reloadFiles();
-        CloudProps = new CloudProperties(new File(Files.COUD_PROPS.getName()));
-      new CommandMaster(). setup();
-
-
-      new InputWaiter(System.in);
-    }
-    public static void stop(){
-        CloudProps = null;
-
-    }
-    public static void restart(){
-        stop();
-        start();
-    }
+    public static Server here;
     public static void main(String[] args) throws IOException {
 
         start();
     }
+
+    public static void start() throws IOException {
+
+
+        Runnable r = () -> {
+            int i = 3;
+            while (i != 0) {
+                Logs.log(Logs.INFORMATION, "Cloud starting in " + i);
+                i--;
+                try {
+
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            Logs.log(Logs.INFORMATION, "Cloud starting...");
+            FileManager.reloadFiles();
+
+
+            new ButtlerThread().start();
+
+
+
+
+
+            CloudProps = new CloudProperties(new File(Files.COUD_PROPS.getName()));
+            commandMaster = new CommandMaster();
+
+            commandMaster.setup();
+        };
+
+        Thread t = new Thread(r);
+        here  = Server.connect("localhost", 3141);
+        here.test();
+        t.start();
+        if (!filled.isEmpty()) {
+            for (Files files : filled) {
+                FileManager.setupFiles(files);
+                filled.remove(files);
+            }
+        }
+
+        inputWaiter = new InputWaiter(System.in);
+    }
+
+    public static void stop() {
+        Logs.log(Logs.INFORMATION, "Cloud stopping...");
+        CloudProps = null;
+        inputWaiter = null;
+        commandMaster = null;
+        Logs.log(Logs.INFORMATION, "Cloud stopped");
+        System.exit(0);
+    }
+
+    public static void restart() throws IOException {
+        stop();
+
+
+        start();
+
+
+    }
+
+
 }

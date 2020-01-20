@@ -163,6 +163,8 @@ public class FileManager {
             setupFiles(pair.getValue());
         } catch (NullPointerException ex){
            Logs.log(Logs.WARNING, "Cloud is restarting!");
+           Cloud.filled.add(Files.COUD_PROPS);
+
         }
     }
 
@@ -181,10 +183,11 @@ public class FileManager {
             Cloud.CloudProps.reinit(new File(Files.COUD_PROPS.getName()));
             Cloud.CloudProps.reload();
             Cloud.CloudProps.resetup();
+
         }
     }
 
-    private static void deleteFile(File file) {
+    public static void deleteFile(File file) {
 
         if (file.exists()) {
             if (file.isDirectory()) {
